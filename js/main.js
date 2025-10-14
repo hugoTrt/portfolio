@@ -6,23 +6,23 @@ document.addEventListener('mousemove', (e) => {
     title.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
 });
 
-// === Particules simples ===
+// === Particules plus dynamiques ===
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+const colors = ['#00BFFF', '#FF8C00', '#FFFFFF'];
 const particles = [];
-const colors = ['#00BFFF', '#FF8C00', '#1F2833'];
 
-for (let i = 0; i < 80; i++) {
+for (let i = 0; i < 120; i++) {
     particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         r: Math.random() * 2 + 1,
-        dx: (Math.random() - 0.5) * 0.8,
-        dy: (Math.random() - 0.5) * 0.8,
+        dx: (Math.random() - 0.5) * 1.2,
+        dy: (Math.random() - 0.5) * 1.2,
         color: colors[Math.floor(Math.random() * colors.length)]
     });
 }
@@ -38,12 +38,12 @@ function animateParticles() {
         p.x += p.dx;
         p.y += p.dy;
 
+        // Rebond sur les bords
         if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
     });
     requestAnimationFrame(animateParticles);
 }
-
 animateParticles();
 
 window.addEventListener('resize', () => {
