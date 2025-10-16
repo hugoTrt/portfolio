@@ -1,0 +1,94 @@
+/* --- Import de la police Horizon --- */
+@font-face {
+    font-family: 'Horizon';
+    src: url('../assets/fonts/Horizon.otf') format('opentype');
+    font-weight: 700;
+}
+
+/* --- Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #0a0a0a;
+    color: #f5f0e6;
+    font-family: 'Horizon', sans-serif;
+}
+
+/* --- Canvas des particules --- */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* --- Hero --- */
+.hero {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* --- Nom principal --- */
+#title {
+    font-size: 10vw;
+    font-weight: 700;
+    color: #f5f0e6;             /* blanc crème */
+    letter-spacing: 0.05em;
+    position: relative;
+    transition: text-shadow 0.2s ease;
+}
+
+/* Halo lumineux créé via pseudo-élément */
+#title::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,0,0,0.35), transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+
+
+/* Au survol, on active le glow */
+#title.hover::after {
+    opacity: 1;
+}
+
+.hero p {
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    color: #e63946;
+}
+
+.hero h1 {
+    font-family: 'Horizon', sans-serif;
+}
+
+/* Apparition douce */
+.hero {
+    animation: fadeIn 1.8s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,52 +1,86 @@
-// === 3D Tilt Effect ===
-const title = document.getElementById('title');
-document.addEventListener('mousemove', (e) => {
-    const x = (window.innerWidth / 2 - e.pageX) / 25;
-    const y = (window.innerHeight / 2 - e.pageY) / 25;
-    title.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-});
-
-// === Particules plus dynamiques ===
+// --- Particules identiques à la version précédente ---
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const colors = ['#00BFFF', '#FF8C00', '#FFFFFF'];
-const particles = [];
+let mouse = { x: null, y: null, radius: 150 };
 
-for (let i = 0; i < 120; i++) {
-    particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 2 + 1,
-        dx: (Math.random() - 0.5) * 1.2,
-        dy: (Math.random() - 0.5) * 1.2,
-        color: colors[Math.floor(Math.random() * colors.length)]
-    });
-}
-
-function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-
-        p.x += p.dx;
-        p.y += p.dy;
-
-        // Rebond sur les bords
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-    });
-    requestAnimationFrame(animateParticles);
-}
-animateParticles();
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+});
 
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    initParticles();
+});
+
+class Particle {
+    constructor(x, y, size, color) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
+        this.baseX = x;
+        this.baseY = y;
+        this.density = Math.random() * 25 + 2;
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+    update() {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        let maxDistance = mouse.radius;
+        let force = (maxDistance - distance) / maxDistance;
+        let dirX = dx / distance;
+        let dirY = dy / distance;
+
+        if (distance < mouse.radius) {
+            this.x -= dirX * force * this.density;
+            this.y -= dirY * force * this.density;
+        } else {
+            if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 15;
+            if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 15;
+        }
+    }
+}
+
+let particles = [];
+function initParticles() {
+    particles = [];
+    const colors = ['#e63946', '#f5f0e6'];
+    for (let i = 0; i < 250; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 2 + 1;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particles.push(new Particle(x, y, size, color));
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.draw(); p.update(); });
+    requestAnimationFrame(animate);
+}
+initParticles();
+animate();
+
+// --- Effet de glow sur le nom ---
+const title = document.getElementById('title');
+title.addEventListener('mouseenter', () => title.classList.add('hover'));
+title.addEventListener('mouseleave', () => title.classList.remove('hover'));
+title.addEventListener('mousemove', (e) => {
+    const rect = title.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    title.style.setProperty('--x', `${x}px`);
+    title.style.setProperty('--y', `${y}px`);
 });
