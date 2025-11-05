@@ -1,0 +1,344 @@
+/* ======== VARIABLES & RESET ======== */
+:root {
+    --couleur-principale: #0a0a0a;
+    /* Noir très foncé (texte) */
+    --couleur-secondaire: #6366f1;
+    /* Indigo (accent) */
+    --couleur-fond: #f8f8f8;
+    /* Blanc cassé (fond) */
+    --couleur-carte: #ffffff;
+    /* Blanc (pour les cartes) */
+    --ombre-carte: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    --font-principale: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    /* Pour un défilement fluide lors des clics sur les liens */
+}
+
+body {
+    font-family: var(--font-principale);
+    background-color: var(--couleur-fond);
+    color: var(--couleur-principale);
+    line-height: 1.6;
+}
+
+/* ======== LAYOUT & CLASSES UTILES ======== */
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 3rem;
+    /* 48px */
+    font-weight: 900;
+}
+
+h2 {
+    font-size: 2.25rem;
+    /* 36px */
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* ======== HEADER / NAVBAR ======== */
+header {
+    background-color: var(--couleur-fond);
+    border-bottom: 1px solid #e0e0e0;
+    padding: 20px 0;
+    position: sticky;
+    /* Barre de nav qui reste en haut */
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    /* Effet de flou (design) */
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    /* On enlève le padding vertical du container */
+    width: 90%;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--couleur-principale);
+    text-decoration: none;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 25px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: var(--couleur-principale);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--couleur-secondaire);
+}
+
+/* ======== BOUTONS ======== */
+.btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: var(--couleur-secondaire);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #4f52c2;
+    transform: translateY(-2px);
+    /* Effet "hover" sympa */
+}
+
+.btn-secondary {
+    background-color: var(--couleur-carte);
+    color: var(--couleur-principale);
+    border: 1px solid #e0e0e0;
+}
+
+.btn-secondary:hover {
+    background-color: #f1f1f1;
+    transform: translateY(-2px);
+}
+
+.btn-contact {
+    /* Cas spécial pour la nav */
+    background-color: var(--couleur-secondaire);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.btn-contact:hover {
+    background-color: #4f52c2;
+    color: white;
+}
+
+/* ======== SECTION HÉROS ======== */
+#hero {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#hero .subtitle {
+    font-size: 1.25rem;
+    font-weight: 300;
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+.hero-links {
+    display: flex;
+    gap: 15px;
+}
+
+/* ======== SECTION PROJETS ======== */
+.projets-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    /* La grille responsive ! */
+    gap: 30px;
+}
+
+.projet-carte {
+    background-color: var(--couleur-carte);
+    border-radius: 12px;
+    box-shadow: var(--ombre-carte);
+    overflow: hidden;
+    /* Pour que l'image ne dépasse pas */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.projet-carte:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.07), 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.projet-carte img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    /* Assure que l'image couvre la zone */
+}
+
+.projet-carte h3 {
+    padding: 20px 20px 0 20px;
+}
+
+.projet-carte p {
+    padding: 0 20px;
+    font-size: 0.9rem;
+    flex-grow: 1;
+    /* Pousse les liens en bas */
+}
+
+.tags {
+    padding: 15px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tags span {
+    background-color: #eef2ff;
+    /* Bleu très clair (associé à l'indigo) */
+    color: var(--couleur-secondaire);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.projet-liens {
+    padding: 0 20px 20px 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.projet-liens a {
+    text-decoration: none;
+    color: var(--couleur-secondaire);
+    font-weight: 500;
+}
+
+/* ======== SECTION COMPÉTENCES ======== */
+#competences {
+    background-color: var(--couleur-carte);
+    /* Fond blanc pour contraster */
+}
+
+.competences-liste ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.competences-liste li {
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 12px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.competences-liste li:hover {
+    background-color: var(--couleur-secondaire);
+    color: white;
+    border-color: var(--couleur-secondaire);
+}
+
+/* ======== SECTION CONTACT ======== */
+#contact {
+    text-align: center;
+}
+
+#contact p {
+    max-width: 500px;
+    margin: 0 auto 30px auto;
+    font-size: 1.1rem;
+}
+
+/* ======== FOOTER ======== */
+footer {
+    text-align: center;
+    padding: 30px;
+    background-color: #e0e0e0;
+    font-size: 0.9rem;
+    margin-top: 40px;
+}
+
+/* ======== RESPONSIVE (POUR LES MOBILES) ======== */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    /* Cache le menu de base */
+    nav ul {
+        display: none;
+        /* Note : pour un vrai menu burger, il faudrait du JS */
+    }
+
+    /* Affiche juste le bouton contact sur mobile */
+    nav ul li .btn-contact {
+        display: block;
+    }
+
+    /* Centre les éléments du héros */
+    .hero-links {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero-links a {
+        text-align: center;
+    }
+
+    .projet-carte,
+    .competences-liste li {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .projet-carte.is-visible,
+    .competences-liste li.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
