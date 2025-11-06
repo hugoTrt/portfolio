@@ -18,8 +18,8 @@ const messageDisplayTime = 1000;
 const fadeOutTime = 500;
 const logoWaveInDuration = 800;
 const nameDisplayDelay = 500;
-const waitBeforeMove = 1000; // Temps d'attente avant que tout bouge
-const transitionDuration = 1200; // Durée de la transition CSS (1s + 0.2s delay)
+const waitBeforeMove = 1000; 
+const transitionDuration = 1200; 
 
 // Initialisation des références DOM et démarrage de l'animation
 document.addEventListener('DOMContentLoaded', () => {
@@ -68,21 +68,29 @@ async function runIntroSequence() {
 
     // 5. Afficher le logo en vague
     animatedLogo.classList.remove('hidden');
-    await sleep(logoWaveInDuration); // Attendre la fin de l'animation
+    await sleep(logoWaveInDuration); 
 
     // 6. Afficher le nom
     userNameDisplay.classList.remove('hidden');
     await sleep(nameDisplayDelay);
 
-    // 7. Attendre un moment pour que l'utilisateur voie le logo/nom
+    // 7. Attendre 
     await sleep(waitBeforeMove);
 
-    // 8. NOUVEAU : Démarrer la transition !
+    // 8. Démarrer la transition !
+    
+    // "Tuer" les animations pour libérer la propriété 'transform'
+    animatedLogo.style.animation = 'none';
+    userNameDisplay.style.animation = 'none';
+    
+    // Attendre 1 "frame" (20ms) pour que le navigateur lâche l'ancienne anim
+    await sleep(20); 
+    
+    // Appliquer la classe qui DÉCLENCHE la transition "volante"
     body.classList.add('start-transition');
     
-    // 9. NOUVEAU : Démarrer le "Handoff"
-    // (Cache l'intro et affiche le vrai site après la fin de la transition)
-    //setTimeout(hideIntroAnimation, transitionDuration);
+    // 9. Démarrer le "Handoff" 
+    setTimeout(hideIntroAnimation, transitionDuration);
 }
 
 // Fonction pour créer les éléments de texte
@@ -116,14 +124,11 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Fonction pour cacher l'animation d'intro (MISE À JOUR)
+// Fonction pour cacher l'animation d'intro
 function hideIntroAnimation() {
-    // Cette fonction fait le "handoff"
-    // 1. Cache l'écran d'intro pour de bon
     if (introAnimation) {
         introAnimation.classList.add('hidden');
     }
-    // 2. Active la classe qui montre le site final
     body.classList.remove('loading');
     body.classList.add('body-loaded');
 }

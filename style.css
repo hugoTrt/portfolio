@@ -1,4 +1,3 @@
-/* ======== VARIABLES & RESET ======== */
 :root {
     --couleur-principale: #0a0a0a;
     --couleur-secondaire: #6366f1;
@@ -8,6 +7,111 @@
     --font-principale: 'Inter', sans-serif;
 }
 
+/*
+=====================================================
+== BLOC DE CODE : MODE CONSTRUCTION (EN CONSTRUCTION) ==
+=====================================================
+C'est le CSS pour ta page "en construction".
+Tu peux l'activer ou le désactiver dans 'index.html'.
+*/
+
+#construction-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f8f8f8; /* Fond gris très clair (comme l'exemple) */
+    color: #333; /* Couleur de texte principale */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-principale); /* On utilise 'Inter' */
+    z-index: 10000;
+    padding: 20px;
+    
+    /* Caché par défaut */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+/* Quand le body a la classe, on AFFICHE l'overlay */
+body.maintenance-mode #construction-overlay {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+/* Et on CACHE l'animation d'intro */
+body.maintenance-mode #intro-animation {
+    display: none;
+}
+
+.construction-content-minimal {
+    display: flex;
+    flex-direction: row; /* Côté à côté sur ordinateur */
+    align-items: flex-start; /* Aligne en haut */
+    gap: 40px;
+    max-width: 800px; /* Limite la largeur */
+    width: 100%;
+}
+
+.logo-column-minimal {
+    flex-basis: 150px; /* Taille fixe pour le logo */
+}
+
+.logo-column-minimal img {
+    width: 100%;
+    height: auto;
+    /* Si ton logo PNG est blanc sur fond transparent, tu auras besoin de ça: */
+    /* filter: invert(1); */ 
+}
+
+.text-column-minimal {
+    flex: 1; /* Prend le reste de la place */
+}
+
+.text-column-minimal .bio {
+    font-size: 1rem; /* 20px */
+    line-height: 1.6;
+    color: #111; /* Texte un peu plus foncé */
+}
+
+.text-column-minimal .status {
+    font-size: 0.8rem; /* 16px */
+    line-height: 1.7;
+    color: #888; /* Texte gris (comme l'exemple) */
+    margin-top: 25px;
+}
+
+.text-column-minimal .status a {
+    color: #555; /* Liens un peu plus sombres */
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+.text-column-minimal .status a:hover {
+    color: var(--couleur-secondaire); /* Couleur indigo au survol */
+}
+
+/* Version mobile : tout s'empile */
+@media (max-width: 768px) {
+    .construction-content-minimal {
+        flex-direction: column; /* Empile les éléments */
+        align-items: center; /* Centre tout */
+        text-align: center;
+        gap: 20px;
+    }
+    .logo-column-minimal {
+        flex-basis: auto; /* Taille auto */
+        width: 120px; /* Logo plus petit sur mobile */
+    }
+}
+/* ======== FIN NOUVEAU : MODE CONSTRUCTION ======== */
+
+
+/* ======== VARIABLES & RESET ======== */
 * {
     margin: 0;
     padding: 0;
@@ -41,7 +145,6 @@ body {
     align-items: center;
     font-family: 'Fira Code', monospace;
     z-index: 9999;
-    /* NOUVEAU : La transition de fondu de l'arrière-plan */
     transition: opacity 1s ease-out 0.5s;
     overflow: hidden;
 }
@@ -94,8 +197,6 @@ body {
     transform: translateY(100%);
     animation: logoWaveIn 0.8s ease-out forwards;
     animation-delay: 0.3s;
-    
-    /* NOUVEAU : La transition vers le header */
     transition: transform 1s ease-in-out, width 1s ease-in-out, height 1s ease-in-out, opacity 1s ease-in-out;
 }
 #animated-logo.hidden {
@@ -120,8 +221,6 @@ body {
     opacity: 0;
     animation: fadeIn 0.5s ease-out forwards;
     animation-delay: 1.1s;
-    
-    /* NOUVEAU : La transition vers le H1 */
     transition: transform 1s ease-in-out, font-size 1s ease-in-out, opacity 1s ease-in-out;
 }
 #user-name-display.hidden {
@@ -147,20 +246,17 @@ body.loading footer {
     visibility: hidden;
 }
 
-/* NOUVEAU : Cache les cibles finales pendant l'animation */
 body:not(.body-loaded) header .logo,
 body:not(.body-loaded) main #hero h1 {
     opacity: 0;
 }
 
-/* NOUVEAU : Apparition du site après l'intro */
 body.body-loaded header,
 body.body-loaded main {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.5s ease-out 0.5s; /* Apparaît après 0.5s */
+    transition: opacity 0.5s ease-out 0.5s;
 }
-/* Le footer peut apparaître plus tard */
 body.body-loaded footer {
     opacity: 1;
     visibility: visible;
@@ -169,27 +265,25 @@ body.body-loaded footer {
 
 /* ======== ANIMATION DE TRANSITION (Le plus important !) ======== */
 
-/* Quand le JS ajoute 'start-transition', on bouge les éléments */
+/* Le fond blanc disparaît */
 body.start-transition #intro-animation {
-    /*opacity: 0;*/ /* Fait disparaître le fond blanc */
+    opacity: 0;
 }
 
 /* 1. Mouvement du LOGO */
 body.start-transition #animated-logo {
-    /* !! TU DOIS AJUSTER CES VALEURS !! */
-    /* On le déplace vers le coin supérieur gauche et on le réduit */
-    transform: translate(-70vw, -70vh) scale(0.01);
-    /*opacity: 0;*/ /* On le fait disparaître à la fin */
-    transition-delay: 0.2s; /* Petit délai avant de bouger */
+    /* !! TU DOIS TOUJOURS AJUSTER ÇA !! */
+    transform: translate(-43vw, -45vh) scale(0.1);
+    opacity: 0; 
+    transition-delay: 0.2s;
 }
 
 /* 2. Mouvement du NOM */
 body.start-transition #user-name-display {
-    /* !! TU DOIS AJUSTER CES VALEURS !! */
-    /* On le déplace vers sa position H1 et on change la police */
-    transform: translateY(-58vh) scale(3.5);
-    font-size: 3rem; /* Cible la taille du H1 */
-    /*opacity: 0;*/ /* On le fait disparaître à la fin */
+    /* !! AJUSTE ÇA (scale/font-size) !! */
+    transform: translateY(-58vh) scale(0.8);
+    font-size: 3rem; 
+    opacity: 0; 
     transition-delay: 0.2s;
 }
 
@@ -199,14 +293,9 @@ body.loading {
     overflow: hidden;
 }
 
-/* Animation du nom H1 (le vrai) */
-.highlight-name {
-    /* Le JS le rendra visible via .body-loaded */
-}
-/* On s'assure que le h1 final est visible quand .body-loaded est là */
 body.body-loaded main #hero h1 {
     opacity: 1;
-    transition: opacity 0.1s; /* Apparition instantanée */
+    transition: opacity 0.1s;
 }
 body.body-loaded header .logo {
     opacity: 1;
@@ -242,8 +331,6 @@ h2 {
     text-align: center;
     margin-bottom: 40px;
 }
-
-/* ======== HEADER / NAVBAR ======== */
 header {
     background-color: var(--couleur-fond);
     border-bottom: 1px solid #e0e0e0;
@@ -281,8 +368,6 @@ nav ul li a {
 nav ul li a:hover {
     color: var(--couleur-secondaire);
 }
-
-/* ======== BOUTONS ======== */
 .btn {
     padding: 12px 24px;
     border-radius: 8px;
@@ -318,8 +403,6 @@ nav ul li a:hover {
     background-color: #4f52c2;
     color: white;
 }
-
-/* ======== SECTION HÉROS ======== */
 #hero {
     min-height: 70vh;
     display: flex;
@@ -338,8 +421,6 @@ nav ul li a:hover {
     display: flex;
     gap: 15px;
 }
-
-/* ======== SECTION PROJETS ======== */
 .projets-grille {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -393,8 +474,6 @@ nav ul li a:hover {
     color: var(--couleur-secondaire);
     font-weight: 500;
 }
-
-/* ======== SECTION COMPÉTENCES ======== */
 #competences {
     background-color: var(--couleur-carte);
 }
@@ -418,8 +497,6 @@ nav ul li a:hover {
     color: white;
     border-color: var(--couleur-secondaire);
 }
-
-/* ======== SECTION CONTACT ======== */
 #contact {
     text-align: center;
 }
@@ -428,8 +505,6 @@ nav ul li a:hover {
     margin: 0 auto 30px auto;
     font-size: 1.1rem;
 }
-
-/* ======== FOOTER ======== */
 footer {
     text-align: center;
     padding: 30px;
@@ -437,8 +512,6 @@ footer {
     font-size: 0.9rem;
     margin-top: 40px;
 }
-
-/* ======== ANIMATION AU SCROLL (Intersection Observer) ======== */
 .projet-carte,
 .competences-liste li {
     opacity: 0;
@@ -450,8 +523,6 @@ footer {
     opacity: 1;
     transform: translateY(0);
 }
-
-/* ======== RESPONSIVE (POUR LES MOBILES) ======== */
 @media (max-width: 768px) {
     h1 {
         font-size: 2.5rem;
@@ -459,15 +530,12 @@ footer {
     h2 {
         font-size: 1.75rem;
     }
-
     nav ul {
         display: none;
     }
-    
     nav ul li .btn-contact {
         display: block;
     }
-
     .hero-links {
         flex-direction: column;
         width: 100%;
@@ -475,8 +543,6 @@ footer {
     .hero-links a {
         text-align: center;
     }
-
-    /* Ajustements pour l'intro sur mobile */
     .terminal-text {
         font-size: 8vw;
     }
@@ -486,8 +552,6 @@ footer {
     #user-name-display {
         font-size: 6vw;
     }
-    
-    /* NOUVEAU : Ajustement de la transition pour mobile */
     body.start-transition #animated-logo {
         transform: translate(-35vw, -45vh) scale(0.15); /* Valeurs différentes pour mobile */
     }
